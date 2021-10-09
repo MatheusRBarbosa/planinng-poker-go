@@ -1,0 +1,13 @@
+nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: #fff9b8;
+    border-bottom: 3px solid #ffed2b;
+}
+
+nav ul {
+    list-style-type: none;
+    cursor: pointer;
+}

@@ -1,0 +1,15 @@
+
+@import './navbar.css';
+@import './fonts.css';
+
+html,
+body {
+    background-color: #f5f5f5;
+    font-family: 'Poppins-SemiBold';
+}
+
+.container {
+    padding-left: 5%;
+    padding-right: 5%;
+    flex-grow: 1;
+}
