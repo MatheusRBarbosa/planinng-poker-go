@@ -1,9 +1,10 @@
 var socket;
 var table;
+var activeValue = null;
 
 (function() {
     socket = new WebSocket("ws://" + window.location.host + "/websocket");
-    table = $("#table");
+    table = $("#result");
 
     socket.addEventListener("message", function(e) {
         const data = JSON.parse(e.data);
@@ -12,14 +13,23 @@ var table;
     });
 })()
 
-function send() {
-    const username = "teste 1";
-    const value = "123";
+function clickCard(value) {
+    if(value != activeValue) {
+        $(`#c${activeValue}`).removeClass('active');
+        $(`#c${value}`).addClass('active');
+        activeValue = value;
+        _sendEvent('ClickCard', value);
+    }
+}
 
+function _sendEvent(event, value) {
+    const username = "teste 1";
+    console.log("enviando >> ", value)
     socket.send(
         JSON.stringify({
             username,
-            value
+            value,
+            event
         })
     )
 }

@@ -8,30 +8,35 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-  <div class="container">
-    <nav>
-      <ul>
-        <li class="nav-title">Bee Poker</li>
-        <li>Username</li>
-        <li><button class="btn">Convidar</button></li>
-        <li><button class="btn"><i class="fas fa-clipboard-list fa-2x"></i></button></li>
-      </ul>
-    </nav>
-    <div class="hand-cards">
-      <ul>
-        <li id="c0" class="btn btn-card">0</li>
-        <li id="c1" class="btn btn-card">1</li>
-        <li id="c2" class="btn btn-card">2</li>
-        <li id="c3" class="btn btn-card">3</li>
-        <li id="c5" class="btn btn-card">5</li>
-        <li id="c8" class="btn btn-card">8</li>
-        <li id="c13" class="btn btn-card">13</li>
-        <li id="c21" class="btn btn-card">21</li>
-        <li id="c34" class="btn btn-card">34</li>
-        <li id="c55" class="btn btn-card">55</li>
-        <li id="c?" class="btn btn-card">?</li>
-      </ul>
+  <nav>
+    <ul>
+      <li class="nav-title">Bee Poker</li>
+      <li>Username</li>
+      <li><button class="btn">Convidar</button></li>
+      <li><button class="btn"><i class="fas fa-clipboard-list fa-2x"></i></button></li>
+    </ul>
+  </nav>
+  <div class="table-position">
+    <div id="result" class="responses">
     </div>
+    <div class="table">
+      <p>Escolham suas cartas!</p>
+    </div>
+  </div>
+  <div class="hand-cards">
+    <ul>
+      <li id="c0" class="btn btn-card" onclick="clickCard('0')">0</li>
+      <li id="c1" class="btn btn-card" onclick="clickCard('1')">1</li>
+      <li id="c2" class="btn btn-card" onclick="clickCard('2')">2</li>
+      <li id="c3" class="btn btn-card" onclick="clickCard('3')">3</li>
+      <li id="c5" class="btn btn-card" onclick="clickCard('5')">5</li>
+      <li id="c8" class="btn btn-card" onclick="clickCard('8')">8</li>
+      <li id="c13" class="btn btn-card" onclick="clickCard('13')">13</li>
+      <li id="c21" class="btn btn-card" onclick="clickCard('21')">21</li>
+      <li id="c34" class="btn btn-card" onclick="clickCard('34')">34</li>
+      <li id="c55" class="btn btn-card" onclick="clickCard('55')">55</li>
+      <li id="cz" class="btn btn-card" onclick="clickCard('z')">?</li>
+    </ul>
   </div>
 </body>
 <script type="text/javascript" src="js/app.js"></script>

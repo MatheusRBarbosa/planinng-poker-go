@@ -10,6 +10,7 @@ import (
 
 type ValueMessage struct {
 	Username string `json:"username"`
+	Event    string `json:"event"`
 	Value    string `json:"value"`
 }
 
