@@ -3,6 +3,7 @@ nav {
     left: 0;
     top: 0;
     width: 100%;
+    height: 5rem;
     background-color: #fff9b8;
     border-bottom: 3px solid #ffed2b;
 }
@@ -10,4 +11,24 @@ nav {
 nav ul {
     list-style-type: none;
     cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+nav ul li:last-child {
+    margin-right: 5rem;
+}
+
+nav ul li.nav-title {
+    margin-right: auto;
+    font-family: 'Poppins-SemiBold';
 }
