@@ -5,11 +5,42 @@
 html,
 body {
     background-color: #f5f5f5;
-    font-family: 'Poppins-SemiBold';
+    font-family: 'Poppins';
 }
 
 .container {
     padding-left: 5%;
     padding-right: 5%;
     flex-grow: 1;
+}
+
+.btn {
+    background-color: transparent;
+    font-family: 'Poppins-Bold';
+    font-size: 16px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border: 2px solid black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn i {
+    margin-top: -3px;
+    margin-bottom: -3px;
+}
+
+.btn:hover {
+    opacity: 0.7;
+}
+
+.btn:active {
+ outline: 2px solid;
+ outline-color: rgba(0, 0, 0, 0.5);
+ outline-offset: 1px;
 }
