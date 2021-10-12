@@ -2,11 +2,12 @@ var socket;
 var activeValue = null;
 var usernameKey = "username";
 
+
 (function() {
     socket = new WebSocket("ws://" + window.location.host + "/websocket");
 
-    _setUsername();
     _listenRemote();
+    setTimeout(() => _initState(), 250);
 })()
 
 function clickCard(value) {
@@ -14,7 +15,17 @@ function clickCard(value) {
         $(`#c${activeValue}`).removeClass('active');
         $(`#c${value}`).addClass('active');
         activeValue = value;
-        _sendEvent('ClickCard', value);
+        _sendEvent('CardChoosed', value);
+    }
+}
+
+function _initState() {
+    _setUsername();
+
+    // Confirma se usuario quer sair da pagina
+    window.onbeforeunload = exitEvent;
+    function exitEvent() {
+        _sendEvent('PlayerDisconnected', null);
     }
 }
 
@@ -39,13 +50,52 @@ function _setUsername() {
 
     $("#me").html(username);
     $("#username").html(username);
+
+    _sendEvent('PlayerConnected', null);
 }
 
 function _listenRemote() {
-    const table = $("#my-value");
     socket.addEventListener("message", function(e) {
         const data = JSON.parse(e.data);
-        const msg = data.value == 'z' ? '?' : data.value;
-        table.html(msg);
+        switch (data.event) {
+            case 'PlayerConnected':
+                _handlePlayerConnected(data.username);
+                break;
+            case 'CardChoosed':
+                _handleCardChoosed(data.value);
+                break;
+            case 'PlayerDisconnected':
+                _handlePlayerDisconnected(data.username);
+                break;
+            case 'ShowCards':
+                break;
+        }
     });
+}
+
+function _handleCardChoosed(value) {
+    const msg = value == 'z' ? '?' : value;
+    $("#my-value").html(msg);
+}
+
+function _handlePlayerConnected(newUsername) {
+    const username = localStorage.getItem(usernameKey);
+    if(username !== newUsername) {
+        newUsername = newUsername.replace(/\"/g,"");
+        const player = _playerTemplate(newUsername);
+        $('.players-position').append(player);
+    }
+}
+
+function _handlePlayerDisconnected(username) {
+    $(`#pc-${username}`).remove();
+}
+
+function _playerTemplate(username) {
+    return `
+        <div id="pc-${username}" class="player">
+            <b>${username}</b>
+            <div class="card-back">8</div>
+        </div>
+    `;
 }
