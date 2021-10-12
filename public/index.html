@@ -3,6 +3,8 @@
 <head>
  <title>Bee Poker</title>
  <link rel="stylesheet" href="css/app.css">
+ <link rel="stylesheet" href="css/cards.css">
+ <link rel="stylesheet" href="css/players.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  <script src="https://kit.fontawesome.com/3898b47b34.js" crossorigin="anonymous"></script>
  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -11,16 +13,34 @@
   <nav>
     <ul>
       <li class="nav-title">Bee Poker</li>
-      <li>Username</li>
+      <li id="username"></li>
       <li><button class="btn">Convidar</button></li>
       <li><button class="btn"><i class="fas fa-clipboard-list fa-2x"></i></button></li>
     </ul>
   </nav>
-  <div class="table-position">
-    <div id="result" class="responses">
+  <div class="container">
+    <div class="players-position">
+      <div class="player">
+        <b>Player name</b>
+        <div class="btn btn-card">13</div>
+      </div>
+      <div class="player">
+        <b>Player name</b>
+        <div class="card-back">13</div>
+      </div>
     </div>
-    <div class="table">
-      <p>Escolham suas cartas!</p>
+    <div class="me-position">
+      <div class="me">
+        <b id="me"></b>
+        <div class="btn btn-card" id="my-value">8</div>
+      </div>
+    </div>
+    <div class="table-position">
+      <div id="result" class="responses">
+      </div>
+      <div class="table">
+        <p>Escolham suas cartas!</p>
+      </div>
     </div>
   </div>
   <div class="hand-cards">

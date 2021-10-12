@@ -1,0 +1,35 @@
+.players-position {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    width: 100%;
+}
+
+.me-position {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 5%;
+}
+
+.me,
+.player {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.player .btn-card {
+    width: 15px;
+}
+
+.me .btn-card:hover,
+.player .btn-card:hover {
+    transform: none;
+    background-color: white;
+    cursor: initial;
+}

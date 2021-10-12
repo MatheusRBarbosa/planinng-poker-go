@@ -1,16 +1,12 @@
 var socket;
-var table;
 var activeValue = null;
+var usernameKey = "username";
 
 (function() {
     socket = new WebSocket("ws://" + window.location.host + "/websocket");
-    table = $("#result");
 
-    socket.addEventListener("message", function(e) {
-        const data = JSON.parse(e.data);
-        const msg = data.value;
-        table.append(msg);
-    });
+    _setUsername();
+    _listenRemote();
 })()
 
 function clickCard(value) {
@@ -23,8 +19,7 @@ function clickCard(value) {
 }
 
 function _sendEvent(event, value) {
-    const username = "teste 1";
-    console.log("enviando >> ", value)
+    const username = localStorage.getItem(usernameKey);
     socket.send(
         JSON.stringify({
             username,
@@ -32,4 +27,25 @@ function _sendEvent(event, value) {
             event
         })
     )
+}
+
+function _setUsername() {
+    
+    let username = localStorage.getItem(usernameKey);
+    if(!username) {
+        username = Math.floor(Math.random() * 100000) + 1;
+        localStorage.setItem(usernameKey, username);
+    }
+
+    $("#me").html(username);
+    $("#username").html(username);
+}
+
+function _listenRemote() {
+    const table = $("#my-value");
+    socket.addEventListener("message", function(e) {
+        const data = JSON.parse(e.data);
+        const msg = data.value == 'z' ? '?' : data.value;
+        table.html(msg);
+    });
 }
