@@ -113,12 +113,7 @@ func messageClient(client *websocket.Conn, msg ValueMessage) {
 }
 
 func storeInRedis(username string) {
-	var msg ValueMessage
-	msg.Username = username
-	msg.Event = PlayerConnected
-	msg.Value = ""
-
-	json, err := json.Marshal(msg.Username)
+	json, err := json.Marshal(username)
 	if err != nil {
 		panic(err)
 	}
@@ -129,7 +124,12 @@ func storeInRedis(username string) {
 }
 
 func removeFromRedis(username string) {
-	if err := rdb.Del(username); err != nil {
+	json, err := json.Marshal(username)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := rdb.LRem("connected_players", 0, json).Err(); err != nil {
 		panic(err)
 	}
 }
