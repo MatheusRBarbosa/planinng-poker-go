@@ -132,6 +132,14 @@ func removeFromRedis(username string) {
 	if err := rdb.LRem("connected_players", 0, json).Err(); err != nil {
 		panic(err)
 	}
+
+	tryCloseSession()
+}
+
+func tryCloseSession() {
+	if rdb.Exists("connected_players").Val() == 0 {
+		rdb.Del("connected_players")
+	}
 }
 
 // If a message is sent while a client is closing, ignore the error

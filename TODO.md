@@ -1,5 +1,2 @@
-- [ ] Apagar registro do redis quando usuario desconectar
-- [ ] Criar estado de nenhuma carta selecionada
-- [ ] Virar carta quando usuario escolher carta
 - [ ] Evento de mostrar as cartas
 - [ ] Timer
