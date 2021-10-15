@@ -62,7 +62,7 @@ function _listenRemote() {
                 _handlePlayerConnected(data.username);
                 break;
             case 'CardChoosed':
-                _handleCardChoosed(data.value);
+                _handleCardChoosed(data);
                 break;
             case 'PlayerDisconnected':
                 _handlePlayerDisconnected(data.username);
@@ -73,16 +73,29 @@ function _listenRemote() {
     });
 }
 
-function _handleCardChoosed(value) {
-    const msg = value == 'z' ? '?' : value;
-    $("#my-value").html(msg);
+function _handleCardChoosed(data) {
+    let card = null;
+    const msg = data.value == 'z' ? '?' : data.value;
+
+    if(data.username == localStorage.getItem(usernameKey)) {
+        card = $("#my-value");
+        card.removeClass();
+        card.addClass('btn');
+        card.addClass('btn-card');
+    } else {
+        card = $(`#pc-${data.username}`);
+        card.removeClass();
+        card.addClass('card-back');
+    }
+
+    card.html(msg);
 }
 
 function _handlePlayerConnected(newUsername) {
     const username = localStorage.getItem(usernameKey);
     if(username !== newUsername) {
         newUsername = newUsername.replace(/\"/g,"");
-        const player = _playerTemplate(newUsername);
+        const player = _newPlayerTemplate(newUsername);
         $('.players-position').append(player);
     }
 }
@@ -91,11 +104,11 @@ function _handlePlayerDisconnected(username) {
     $(`#pc-${username}`).remove();
 }
 
-function _playerTemplate(username) {
+function _newPlayerTemplate(username) {
     return `
-        <div id="pc-${username}" class="player">
+        <div class="player">
             <b>${username}</b>
-            <div class="card-back">8</div>
+            <div id="pc-${username}" class="no-card"></div>
         </div>
     `;
 }
