@@ -26,6 +26,7 @@ const (
 	CardChoosed        string = "CardChoosed"
 	PlayerConnected           = "PlayerConnected"
 	PlayerDisconnected        = "PlayerDisconnected"
+	ShowCardsButton           = "ShowCardsButton"
 	ShowCards                 = "ShowCards"
 )
 
@@ -64,11 +65,23 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			removeFromRedis(msg.Username)
 		} else if msg.Event == PlayerConnected {
 			storeInRedis(msg.Username)
+		} else if msg.Event == CardChoosed {
+			sendShowCards(msg)
 		}
 
 		// send new message to the channel
 		broadcaster <- msg
 	}
+}
+
+func sendShowCards(msg ValueMessage) {
+	var showCards = ValueMessage{
+		Username: msg.Username,
+		Value:    "",
+		Event:    ShowCardsButton,
+	}
+
+	broadcaster <- showCards
 }
 
 func loadPreviousPlayers(ws *websocket.Conn) {

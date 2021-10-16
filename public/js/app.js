@@ -1,7 +1,7 @@
 var socket;
 var activeValue = null;
 var usernameKey = "username";
-
+var alreadyShowed = false;
 
 (function() {
     socket = new WebSocket("ws://" + window.location.host + "/websocket");
@@ -16,6 +16,24 @@ function clickCard(value) {
         $(`#c${value}`).addClass('active');
         activeValue = value;
         _sendEvent('CardChoosed', value);
+    }
+}
+
+function resetTable() {
+    _sendEvent('ResetCards', null);
+}
+
+async function showCards() {
+    if(!alreadyShowed) {
+        _sendEvent('ShowCards', null);
+        for(i = 3; i > 0; i--) {
+            const text = `<p>Mostrando cartas em ${i}</p>`
+            $('#table').html(text);
+            await _sleep(1000);
+        }
+
+        _showResetButton();
+        alreadyShowed = true;
     }
 }
 
@@ -67,7 +85,14 @@ function _listenRemote() {
             case 'PlayerDisconnected':
                 _handlePlayerDisconnected(data.username);
                 break;
+            case 'ShowCardsButton':
+                _handleShowCardsButton();
+                break;
             case 'ShowCards':
+                showCards();
+                break;
+            case 'ResetCards':
+                _handleResetCards();
                 break;
         }
     });
@@ -104,11 +129,42 @@ function _handlePlayerDisconnected(username) {
     $(`#pc-${username}`).remove();
 }
 
+function _handleShowCardsButton() {
+    const button = _newButtonActionTemplate('Mostrar cartas', 'showCards');
+    $('#table').html(button);
+}
+
+function _showResetButton() {
+    const button = _newButtonActionTemplate('Zerar mesa', 'resetTable');
+    $('#table').html(button);
+}
+
+function _newButtonActionTemplate(text, action) {
+    return `<button onclick="${action}()" class="btn btn-black">${text}</button>`
+}
+
+function _handleResetCards() {
+    const tableText = '<p>Escolham suas cartas!</p>';
+    $('#table').html(tableText);
+    
+    $('#my-value').removeClass();
+    $('#my-value').html("");
+    $('#my-value').addClass('no-card');
+
+    $('div[card]').removeClass();
+    $('div[card]').addClass('no-card');
+    $('div[card]').html("");
+}
+
 function _newPlayerTemplate(username) {
     return `
         <div class="player">
             <b>${username}</b>
-            <div id="pc-${username}" class="no-card"></div>
+            <div id="pc-${username}" card class="no-card"></div>
         </div>
     `;
 }
+
+function _sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }

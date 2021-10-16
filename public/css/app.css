@@ -43,6 +43,11 @@ body {
     justify-content: center;
 }
 
+.btn-black {
+    background-color: black;
+    color: white;
+}
+
 .btn i {
     margin-top: -3px;
     margin-bottom: -3px;
