@@ -28,6 +28,7 @@ const (
 	PlayerDisconnected        = "PlayerDisconnected"
 	ShowCardsButton           = "ShowCardsButton"
 	ShowCards                 = "ShowCards"
+	ShowCardsCountdown        = "ShowCardsCountdown"
 )
 
 var clients = make(map[*websocket.Conn]bool)

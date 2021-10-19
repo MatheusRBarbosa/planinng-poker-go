@@ -19,22 +19,12 @@ function clickCard(value) {
     }
 }
 
-function resetTable() {
-    _sendEvent('ResetCards', null);
+function clickShowCards() {
+    _sendEvent('ShowCards', null);
 }
 
-async function showCards() {
-    if(!alreadyShowed) {
-        _sendEvent('ShowCards', null);
-        for(i = 3; i > 0; i--) {
-            const text = `<p>Mostrando cartas em ${i}</p>`
-            $('#table').html(text);
-            await _sleep(1000);
-        }
-
-        _showResetButton();
-        alreadyShowed = true;
-    }
+function resetTable() {
+    _sendEvent('ResetCards', null);
 }
 
 function _initState() {
@@ -75,6 +65,7 @@ function _setUsername() {
 function _listenRemote() {
     socket.addEventListener("message", function(e) {
         const data = JSON.parse(e.data);
+        console.log("EVENT RECEIVED >> ", data);
         switch (data.event) {
             case 'PlayerConnected':
                 _handlePlayerConnected(data.username);
@@ -89,7 +80,7 @@ function _listenRemote() {
                 _handleShowCardsButton();
                 break;
             case 'ShowCards':
-                showCards();
+                _handleshowCards();
                 break;
             case 'ResetCards':
                 _handleResetCards();
@@ -126,21 +117,28 @@ function _handlePlayerConnected(newUsername) {
 }
 
 function _handlePlayerDisconnected(username) {
+    $(`#${username}`).remove();
     $(`#pc-${username}`).remove();
 }
 
 function _handleShowCardsButton() {
-    const button = _newButtonActionTemplate('Mostrar cartas', 'showCards');
+    const button = _newButtonActionTemplate('Mostrar cartas', 'clickShowCards');
     $('#table').html(button);
 }
 
-function _showResetButton() {
-    const button = _newButtonActionTemplate('Zerar mesa', 'resetTable');
-    $('#table').html(button);
-}
+async function _handleshowCards() {    
+    if(!alreadyShowed) {
+        alreadyShowed = true;
 
-function _newButtonActionTemplate(text, action) {
-    return `<button onclick="${action}()" class="btn btn-black">${text}</button>`
+        for(i = 3; i > 0; i--) {
+            const text = `<p>Mostrando cartas em ${i}</p>`
+            $('#table').html(text);
+            await _sleep(1000);
+        }
+
+        _showCards();
+        _showResetButton();
+    }
 }
 
 function _handleResetCards() {
@@ -154,12 +152,28 @@ function _handleResetCards() {
     $('div[card]').removeClass();
     $('div[card]').addClass('no-card');
     $('div[card]').html("");
+
+    alreadyShowed = false;
+}
+
+function _showCards() {
+    $('div[card]').removeClass();
+    $('div[card]').addClass('btn btn-card');
+}
+
+function _showResetButton() {
+    const button = _newButtonActionTemplate('Zerar mesa', 'resetTable');
+    $('#table').html(button);
+}
+
+function _newButtonActionTemplate(text, action) {
+    return `<button onclick="${action}()" class="btn btn-black">${text}</button>`
 }
 
 function _newPlayerTemplate(username) {
     return `
         <div class="player">
-            <b>${username}</b>
+            <b id="${username}">${username}</b>
             <div id="pc-${username}" card class="no-card"></div>
         </div>
     `;
