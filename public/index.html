@@ -1,55 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
- <title>Bee Poker</title>
- <link rel="stylesheet" href="css/app.css">
- <link rel="stylesheet" href="css/cards.css">
- <link rel="stylesheet" href="css/players.css">
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script src="https://kit.fontawesome.com/3898b47b34.js" crossorigin="anonymous"></script>
- <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body>
-  <nav>
-    <ul>
-      <li class="nav-title">Bee Poker</li>
-      <li id="username"></li>
-      <li><button class="btn">Convidar</button></li>
-      <li><button class="btn"><i class="fas fa-clipboard-list fa-2x"></i></button></li>
-    </ul>
-  </nav>
-  <div class="container">
-    <div class="players-position">
-    </div>
-    <div class="me-position">
-      <div class="me">
-        <b id="me"></b>
-        <div class="no-card" id="my-value"></div>
+  <head>
+    <title>Bee Poker</title>
+    <link rel="stylesheet" href="css/app.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/3898b47b34.js"
+      crossorigin="anonymous"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="form-card-position">
+      <div class="form-card">
+        <label for="username">Seu nome</label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Deixe em branco para gerar um aleatório"
+        />
+        <label for="session">Sessão</label>
+        <input
+          id="session"
+          type="text"
+          placeholder="Deixe branco para criar uma nova"
+        />
+        <button class="btn btn-black">Confirmar</button>
       </div>
     </div>
-    <div class="table-position">
-      <div id="result" class="responses">
-      </div>
-      <div id="table" class="table">
-        <p>Escolham suas cartas!</p>
-      </div>
-    </div>
-  </div>
-  <div class="hand-cards">
-    <ul>
-      <li id="c0" class="btn btn-card" onclick="clickCard('0')">0</li>
-      <li id="c1" class="btn btn-card" onclick="clickCard('1')">1</li>
-      <li id="c2" class="btn btn-card" onclick="clickCard('2')">2</li>
-      <li id="c3" class="btn btn-card" onclick="clickCard('3')">3</li>
-      <li id="c5" class="btn btn-card" onclick="clickCard('5')">5</li>
-      <li id="c8" class="btn btn-card" onclick="clickCard('8')">8</li>
-      <li id="c13" class="btn btn-card" onclick="clickCard('13')">13</li>
-      <li id="c21" class="btn btn-card" onclick="clickCard('21')">21</li>
-      <li id="c34" class="btn btn-card" onclick="clickCard('34')">34</li>
-      <li id="c55" class="btn btn-card" onclick="clickCard('55')">55</li>
-      <li id="cz" class="btn btn-card" onclick="clickCard('z')">?</li>
-    </ul>
-  </div>
-</body>
-<script type="text/javascript" src="js/app.js"></script>
+  </body>
 </html>
