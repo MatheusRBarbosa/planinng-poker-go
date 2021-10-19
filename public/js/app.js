@@ -153,6 +153,9 @@ function _handleResetCards() {
     $('div[card]').addClass('no-card');
     $('div[card]').html("");
 
+    $('.active').removeClass('active');
+
+    activeValue = null;
     alreadyShowed = false;
 }
 
