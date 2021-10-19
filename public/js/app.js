@@ -118,7 +118,6 @@ function _handlePlayerConnected(newUsername) {
 
 function _handlePlayerDisconnected(username) {
     $(`#${username}`).remove();
-    $(`#pc-${username}`).remove();
 }
 
 function _handleShowCardsButton() {
@@ -175,8 +174,8 @@ function _newButtonActionTemplate(text, action) {
 
 function _newPlayerTemplate(username) {
     return `
-        <div class="player">
-            <b id="${username}">${username}</b>
+        <div id="${username}" class="player">
+            <b>${username}</b>
             <div id="pc-${username}" card class="no-card"></div>
         </div>
     `;
