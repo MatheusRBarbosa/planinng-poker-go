@@ -61,35 +61,3 @@ body {
   outline-color: rgba(0, 0, 0, 0.5);
   outline-offset: 1px;
 }
-.form-card-position {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.form-card {
-  background-color: white;
-  display: flex;
-  width: 20rem;
-  flex-direction: column;
-  padding: 2.5rem;
-  border: 2px solid black;
-  border-radius: 10px;
-}
-
-.form-card .btn {
-  margin-top: 2rem;
-}
-
-label {
-  margin-top: 0.5rem;
-}
-
-input {
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid black;
-  border-radius: 5px;
-}

@@ -2,12 +2,18 @@ var socket;
 var activeValue = null;
 var usernameKey = "username";
 var alreadyShowed = false;
+var sessionId = null;
 
 (function() {
-    socket = new WebSocket("ws://" + window.location.host + "/websocket");
+    const urlParams = new URLSearchParams(window.location.search);
+    if(_hasSession(urlParams) && _hasUsername()) {
+        socket = new WebSocket("ws://" + window.location.host + "/websocket");
+        _listenRemote();
+        setTimeout(() => _initState(urlParams), 250);
+    } else {
+        _redirectToIndex(urlParams);
+    }
 
-    _listenRemote();
-    setTimeout(() => _initState(), 250);
 })()
 
 function clickCard(value) {
@@ -27,8 +33,24 @@ function resetTable() {
     _sendEvent('ResetCards', null);
 }
 
-function _initState() {
-    _setUsername();
+function goToHome() {
+    window.location.href = '/';
+}
+
+function _hasSession(urlParams) {
+    const hasSession = urlParams.has('s');
+    return hasSession;
+}
+
+function _hasUsername() {
+    const hasUsername = !!localStorage.getItem(usernameKey);
+    return hasUsername;
+}
+
+function _initState(urlParams) {
+    sessionId = urlParams.get('s');
+    _getUsername();
+    _sendEvent('PlayerConnected', null);
 
     // Confirma se usuario quer sair da pagina
     window.onbeforeunload = exitEvent;
@@ -37,35 +59,38 @@ function _initState() {
     }
 }
 
+function _redirectToIndex(urlParams) {
+    sessionId = null;
+    let url = `/`;
+    if(urlParams.has('s')) {
+        url = `index.html?s=${urlParams.get('s')}`;
+    }
+
+    window.location.href = url;
+}
+
 function _sendEvent(event, value) {
     const username = localStorage.getItem(usernameKey);
     socket.send(
         JSON.stringify({
             username,
+            sessionId,
             value,
             event
         })
     )
 }
 
-function _setUsername() {
-    
+function _getUsername() {
     let username = localStorage.getItem(usernameKey);
-    if(!username) {
-        username = Math.floor(Math.random() * 100000) + 1;
-        localStorage.setItem(usernameKey, username);
-    }
 
     $("#me").html(username);
     $("#username").html(username);
-
-    _sendEvent('PlayerConnected', null);
 }
 
 function _listenRemote() {
     socket.addEventListener("message", function(e) {
         const data = JSON.parse(e.data);
-        console.log("EVENT RECEIVED >> ", data);
         switch (data.event) {
             case 'PlayerConnected':
                 _handlePlayerConnected(data.username);

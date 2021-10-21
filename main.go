@@ -18,6 +18,7 @@ var (
 
 type ValueMessage struct {
 	Username string `json:"username"`
+	Session  string `json:"sessionId"`
 	Event    string `json:"event"`
 	Value    string `json:"value"`
 }
@@ -48,11 +49,6 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	defer ws.Close()
 	clients[ws] = true
 
-	// if it's zero, no messages were ever sent/saved
-	if rdb.Exists("connected_players").Val() != 0 {
-		loadPreviousPlayers(ws)
-	}
-
 	for {
 		var msg ValueMessage
 		// Read in a new message as JSON and map it to a Message object
@@ -63,9 +59,12 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if msg.Event == PlayerDisconnected {
-			removeFromRedis(msg.Username)
+			removeFromRedis(msg.Username, msg.Session)
 		} else if msg.Event == PlayerConnected {
-			storeInRedis(msg.Username)
+			if rdb.Exists(msg.Session).Val() != 0 {
+				loadPreviousPlayers(ws, msg.Session)
+			}
+			storeInRedis(msg.Username, msg.Session)
 		} else if msg.Event == CardChoosed {
 			sendShowCards(msg)
 		}
@@ -85,8 +84,8 @@ func sendShowCards(msg ValueMessage) {
 	broadcaster <- showCards
 }
 
-func loadPreviousPlayers(ws *websocket.Conn) {
-	players, err := rdb.LRange("connected_players", 0, -1).Result()
+func loadPreviousPlayers(ws *websocket.Conn, session string) {
+	players, err := rdb.LRange(session, 0, -1).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -96,6 +95,7 @@ func loadPreviousPlayers(ws *websocket.Conn) {
 		var msg ValueMessage
 		msg.Username = player
 		msg.Event = PlayerConnected
+		msg.Session = session
 		msg.Value = ""
 		messageClient(ws, msg)
 	}
@@ -126,33 +126,33 @@ func messageClient(client *websocket.Conn, msg ValueMessage) {
 	}
 }
 
-func storeInRedis(username string) {
+func storeInRedis(username string, session string) {
 	json, err := json.Marshal(username)
 	if err != nil {
 		panic(err)
 	}
 
-	if err := rdb.RPush("connected_players", json).Err(); err != nil {
+	if err := rdb.RPush(session, json).Err(); err != nil {
 		panic(err)
 	}
 }
 
-func removeFromRedis(username string) {
+func removeFromRedis(username string, session string) {
 	json, err := json.Marshal(username)
 	if err != nil {
 		panic(err)
 	}
 
-	if err := rdb.LRem("connected_players", 0, json).Err(); err != nil {
+	if err := rdb.LRem(session, 0, json).Err(); err != nil {
 		panic(err)
 	}
 
-	tryCloseSession()
+	tryCloseSession(session)
 }
 
-func tryCloseSession() {
-	if rdb.Exists("connected_players").Val() == 0 {
-		rdb.Del("connected_players")
+func tryCloseSession(session string) {
+	if rdb.Exists(session).Val() == 0 {
+		rdb.Del(session)
 	}
 }
 

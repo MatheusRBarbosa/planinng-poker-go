@@ -3,6 +3,7 @@
   <head>
     <title>Bee Poker</title>
     <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/home.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
       src="https://kit.fontawesome.com/3898b47b34.js"
@@ -12,21 +13,25 @@
   </head>
   <body>
     <div class="form-card-position">
-      <div class="form-card">
-        <label for="username">Seu nome</label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Deixe em branco para gerar um aleatório"
-        />
-        <label for="session">Sessão</label>
-        <input
-          id="session"
-          type="text"
-          placeholder="Deixe branco para criar uma nova"
-        />
-        <button class="btn btn-black">Confirmar</button>
-      </div>
+      <form onsubmit="submitAuth(event)">
+        <div class="form-card">
+          <label for="username">Como deseja ser chamado?</label>
+          <input
+            id="username"
+            type="text"
+            required
+            placeholder="Escolha um nome prático ;)"
+          />
+          <label for="session">Sessão</label>
+          <input
+            id="session"
+            type="text"
+            placeholder="Deixe branco para criar uma nova"
+          />
+          <input type="submit" class="btn btn-black" value="Confirmar"></input>
+        </div>
+      </form>
     </div>
+    <script type="text/javascript" src="./js/home.js"></script>
   </body>
 </html>

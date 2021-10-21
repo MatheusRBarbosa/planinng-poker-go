@@ -1,3 +1,0 @@
-- [ ] Arrumar dois eventos seguidos de mostrar cartas (bug)
-- [ ] Quando rola F5 mostra usernames duplicados
-- [ ] Timer

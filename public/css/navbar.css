@@ -1,34 +1,34 @@
 nav {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 5rem;
-    background-color: #fff9b8;
-    border-bottom: 3px solid var(--primary);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  background-color: #fff9b8;
+  border-bottom: 3px solid var(--primary);
 }
 
 nav ul {
-    list-style-type: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-    margin: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  margin: 0;
 }
 
 nav ul li {
-    display: inline;
-    margin-left: 1rem;
-    margin-right: 1rem;
+  display: inline;
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 nav ul li:last-child {
-    margin-right: 5rem;
+  margin-right: 5rem;
 }
 
 nav ul li.nav-title {
-    margin-right: auto;
-    font-family: 'Poppins-SemiBold';
+  margin-right: auto;
+  font-family: "Poppins-SemiBold";
 }
