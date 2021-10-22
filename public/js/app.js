@@ -7,7 +7,7 @@ var sessionId = null;
 (function() {
     const urlParams = new URLSearchParams(window.location.search);
     if(_hasSession(urlParams) && _hasUsername()) {
-        socket = new WebSocket("ws://" + window.location.host + "/websocket");
+        _createSocket();
         _listenRemote();
         setTimeout(() => _initState(urlParams), 250);
     } else {
@@ -40,6 +40,16 @@ function goToHome() {
 function _hasSession(urlParams) {
     const hasSession = urlParams.has('s');
     return hasSession;
+}
+
+function _createSocket() {
+    let protocol = 'ws';
+    if(location.protocol !== 'https:') {
+        protocol = 'wss';
+    }
+    
+    const url = `${protocol}://${window.location.host}/websocket`;
+    socket = new WebSocket(url);
 }
 
 function _hasUsername() {
