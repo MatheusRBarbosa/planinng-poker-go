@@ -44,10 +44,10 @@ function _hasSession(urlParams) {
 
 function _createSocket() {
     let protocol = 'ws';
-    if(location.protocol !== 'https:') {
+    if(location.protocol == 'https:') {
         protocol = 'wss';
     }
-    
+
     const url = `${protocol}://${window.location.host}/websocket`;
     socket = new WebSocket(url);
 }
