@@ -81,14 +81,31 @@ function _redirectToIndex(urlParams) {
 
 function _sendEvent(event, value) {
     const username = localStorage.getItem(usernameKey);
-    socket.send(
-        JSON.stringify({
-            username,
-            sessionId,
-            value,
-            event
-        })
-    )
+    _waitConnection(() => {
+        socket.send(
+            JSON.stringify({
+                username,
+                sessionId,
+                value,
+                event
+            })
+        )
+    });
+}
+
+function _waitConnection(callback) {
+    setTimeout(() => {
+        if(socket.readyState === 1) {
+            if(callback !== undefined) {
+                callback();
+            }
+
+            return;
+        } else {
+            _waitConnection(callback);
+        }
+        console.log("Tentando estabelecer conexão com socket...");
+    }, 100);
 }
 
 function _getUsername() {
