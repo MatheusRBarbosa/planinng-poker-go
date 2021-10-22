@@ -1,1 +1,1 @@
-web: bin/go-chat
+web: bin/planning-poker
